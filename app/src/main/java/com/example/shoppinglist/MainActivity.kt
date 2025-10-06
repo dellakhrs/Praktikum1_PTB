@@ -30,6 +30,7 @@ import com.example.shoppinglist.component.ItemInput
 import com.example.shoppinglist.component.SearchInput
 import com.example.shoppinglist.components.ShoppingList
 import com.example.shoppinglist.ui.theme.ShoppingListTheme
+import com.example.shoppinglist.ui.theme.screen.MainScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,12 +41,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    ShoppingListApp()
+                    MainScreen() // Container utama, panggil langsung di sini
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun ShoppingListApp() {

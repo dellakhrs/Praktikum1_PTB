@@ -2,12 +2,14 @@ package com.example.shoppinglist.ui.theme.screen
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.shoppinglist.ui.theme.navigation.AppNavGraph
 import kotlinx.coroutines.launch
@@ -18,6 +20,14 @@ fun MainScreen() {
     val navController = rememberNavController()
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+    val screenTitle = when (currentRoute) {
+        "home" -> "Shopping List"
+        "profile" -> "Profile"
+        "settings" -> "Settings"
+        else -> "Shopping List"
+    }
 
     ModalNavigationDrawer(
         drawerState = drawerState,
@@ -25,47 +35,58 @@ fun MainScreen() {
             ModalDrawerSheet {
                 Text(
                     text = "Menu",
-                    modifier = Modifier.padding(16.dp), // ✅ perbaikan di sini
+                    modifier = Modifier.padding(16.dp),
                     style = MaterialTheme.typography.titleMedium
                 )
                 NavigationDrawerItem(
                     label = { Text("Home") },
-                    selected = false,
+                    selected = currentRoute == "home",
                     onClick = {
                         scope.launch { drawerState.close() }
-                        navController.navigate("home")
+                        navController.navigate("home") { launchSingleTop = true }
                     }
                 )
                 NavigationDrawerItem(
                     label = { Text("Settings") },
-                    selected = false,
+                    selected = currentRoute == "settings",
                     onClick = {
                         scope.launch { drawerState.close() }
-                        navController.navigate("settings")
+                        navController.navigate("settings") { launchSingleTop = true }
                     }
                 )
             }
         }
     ) {
         Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(screenTitle) },
+                    navigationIcon = {
+                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                            Icon(Icons.Filled.Menu, contentDescription = "Menu")
+                        }
+                    }
+                )
+            },
             bottomBar = {
                 NavigationBar {
+                    // Item 1: Home (Shopping List)
                     NavigationBarItem(
-                        selected = false,
-                        onClick = { navController.navigate("home") },
-                        icon = { Icon(Icons.AutoMirrored.Filled.List, contentDescription = "Home") },
-                        label = { Text("Home") }
+                        selected = currentRoute == "home",
+                        onClick = { navController.navigate("home") { launchSingleTop = true } },
+                        icon = { Icon(Icons.Filled.Home, contentDescription = "Home") },
+                        label = { Text("Shopping List") }
                     )
+                    // Item 2: Profile
                     NavigationBarItem(
-                        selected = false,
-                        onClick = { navController.navigate("profile") },
+                        selected = currentRoute == "profile",
+                        onClick = { navController.navigate("profile") { launchSingleTop = true } },
                         icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
                         label = { Text("Profile") }
                     )
                 }
             }
         ) { innerPadding ->
-            // ✅ innerPadding digunakan agar konten tidak tertutup bottom bar
             AppNavGraph(
                 navController = navController,
                 modifier = Modifier.padding(innerPadding)

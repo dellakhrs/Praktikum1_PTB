@@ -13,6 +13,23 @@ import com.example.shoppinglist.R
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
+fun ProfileDetailRow(
+    label: String,
+    value: String,
+    modifier: Modifier = Modifier,
+    labelWidth: Modifier = Modifier.width(120.dp)
+) {
+    Row(modifier = modifier.fillMaxWidth()) {
+        Text(
+            label,
+            fontWeight = FontWeight.Bold,
+            modifier = labelWidth
+        )
+        Text(": $value")
+    }
+}
+
+@Composable
 fun ProfileScreen() {
     Column(
         modifier = Modifier
@@ -27,61 +44,17 @@ fun ProfileScreen() {
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-
         Card(
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                // Nama
-                Row {
-                    Text(
-                        "Nama",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.width(120.dp) // lebar tetap agar titik dua sejajar
-                    )
-                    Text(": Della Khairunnisa")
-                }
-
-                // NIM
-                Row {
-                    Text(
-                        "NIM",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.width(120.dp)
-                    )
-                    Text(": 2311523032")
-                }
-
-                // Hobi
-                Row {
-                    Text(
-                        "Hobi",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.width(120.dp)
-                    )
-                    Text(": Desain dan Fotografi")
-                }
-
-                // TTL
-                Row {
-                    Text(
-                        "TTL",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.width(120.dp)
-                    )
-                    Text(": Padang, 07 Desember 2004")
-                }
-
-                // Peminatan
-                Row {
-                    Text(
-                        "Peminatan",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.width(120.dp)
-                    )
-                    Text(": System Development")
-                }
-            }}
+                ProfileDetailRow(label = "Nama", value = "Della Khairunnisa")
+                ProfileDetailRow(label = "NIM", value = "2311523032")
+                ProfileDetailRow(label = "TTL", value = "Padang, 07 Desember 2004")
+                ProfileDetailRow(label = "Hobi", value = "Desain dan Fotografi")
+                ProfileDetailRow(label = "Peminatan", value = "UI/UX Designer")
+            }
+        }
     }
 }

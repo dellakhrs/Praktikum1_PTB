@@ -41,13 +41,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen() // Container utama, panggil langsung di sini
+                    MainScreen() 
                 }
             }
         }
     }
 }
-
 
 @Composable
 fun ShoppingListApp() {
